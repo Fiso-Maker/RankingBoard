@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.route("/CreateUserData").get(getRouteHandlerForCreateUserData).post(postRouteHandlerForCreateUserData);
 router.route("/UserList").get(getRouteHandlerForUserList).post(postRouteHandlerForUserList);
+router.route("/DeleteUser").get(getRouteHandlerForDeleteUser).post(postRouteHandlerForDeleteUser);
+router.route("/UpdateUser").get(getRouteHandlerForUpdateUser).post(postRouteHandlerForUpdateUser);
 
 async function getRouteHandlerForCreateUserData(req, res) {
     //handle GET route here
@@ -32,7 +34,7 @@ async function postRouteHandlerForCreateUserData(req, res) {
 async function getRouteHandlerForUserList(req, res) {
     //handle GET route here
     try {
-        let userRanking = await db.SelectQuery(`SELECT *, rank() over(order by score desc) AS ranking FROM users`);
+        let userRanking = await db.SelectQuery(`SELECT * FROM users`);
         res.send(userRanking);
     } catch (err) {
         console.error(err);
@@ -41,8 +43,49 @@ async function getRouteHandlerForUserList(req, res) {
 async function postRouteHandlerForUserList(req, res) {
     //handle GET route here
     try {
-        let userRanking = await db.SelectQuery(`SELECT *, rank() over(order by score desc) AS ranking FROM users`);
+        let userRanking = await db.SelectQuery(`SELECT * FROM users`);
         res.send(userRanking);
+    } catch (err) {
+        console.error(err);
+    }
+}
+async function getRouteHandlerForDeleteUser(req, res) {
+    //handle GET route here
+    try {
+        const { idx } = req.body;
+        await db.TransactionQuery([`DELETE FROM users WHERE idx = ${idx}`]);
+        res.send();
+    } catch (err) {
+        console.error(err);
+    }
+}
+async function postRouteHandlerForDeleteUser(req, res) {
+    //handle GET route here
+    try {
+        const { idx } = req.body;
+        await db.TransactionQuery([`DELETE FROM users WHERE idx = ${idx}`]);
+        res.send();
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function getRouteHandlerForUpdateUser(req, res) {
+    //handle GET route here
+    try {
+        const { idx, userIdx, score, updateDt, season } = req.body;
+        await db.TransactionQuery([`UPDATE users SET userIdx = '${userIdx}', score = ${score}, updateDt = '${updateDt}',season=${season} WHERE idx = ${idx}`]);
+        res.send();
+    } catch (err) {
+        console.error(err);
+    }
+}
+async function postRouteHandlerForUpdateUser(req, res) {
+    //handle GET route here
+    try {
+        const { idx, userIdx, score, updateDt, season } = req.body;
+        await db.TransactionQuery([`UPDATE users SET userIdx = '${userIdx}', score = ${score}, updateDt = '${updateDt}',season=${season} WHERE idx = ${idx}`]);
+        res.send();
     } catch (err) {
         console.error(err);
     }

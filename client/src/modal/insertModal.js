@@ -48,6 +48,7 @@ export default (props) => {
         }
 
         handleClose();
+        window.location.replace("/");
         // setTrigger(trigger + 1);
         // axios(`/api/user/info/update/tableName={props.tableName}, channelNo, 'setValues', 'condition'`)
     };

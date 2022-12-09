@@ -42,7 +42,7 @@ export default function RankingBoardGrid(props) {
                 columns={columns}
                 getRowId={(row) => row.idx}
                 onRowDoubleClick={(row) => {
-                    setRowData({ ...row });
+                    setRowData({ ...row.row });
 
                     if (setUpdateModalOpen) {
                         setUpdateModalOpen(true);
@@ -51,7 +51,7 @@ export default function RankingBoardGrid(props) {
             />
             <Button onClick={insertOpen}>INSERT</Button>
             <InsertModal isOpen={insertModalOpen} handleClose={handleClose}></InsertModal>
-            <UpdateModal isOpen={updateModalOpen} handleClose={handleClose} rowData={rowData}></UpdateModal>
+            <UpdateModal isOpen={updateModalOpen} handleClose={handleClose} rowData={userListData.currentResult}></UpdateModal>
         </div>
     );
 }

@@ -8,7 +8,7 @@ const config = {
     development: {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
-        user: "root",
+        user: "admin",
         password: process.env.DB_PASSWORD,
         database: "rankingboard",
     },

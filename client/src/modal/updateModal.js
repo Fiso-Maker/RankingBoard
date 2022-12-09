@@ -4,9 +4,10 @@ import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import userListData from "../data/userList";
 import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from "recoil";
+import dayjs from "dayjs";
 
 export default (props) => {
-    const [rowData, setRowData] = React.useState(props.rowData.row);
+    const [rowData, setRowData] = useRecoilState(userListData.currentResult);
     // const [trigger, setTrigger] = useRecoilState(userListData.Trigger);
 
     const handleChange = (prop) => (event) => {
@@ -32,16 +33,18 @@ export default (props) => {
         props.handleClose();
     };
 
-    const deleteRowBtn = async () => {
+    const updateRowBtn = async () => {
+        let updateDt = dayjs(rowData.updateDt).format("YYYY-MM-DD HH:mm:ss");
+
         let postData = {
             idx: rowData.idx,
             userIdx: rowData.userIdx,
             score: rowData.score,
-            updateDt: rowData.updateDt,
+            updateDt: updateDt,
             season: rowData.season,
         };
         try {
-            await axios.post("/api/user/CreateUserData", postData);
+            await axios.post("/api/user/UpdateUser", postData);
 
             alert("수정되었습니다.");
         } catch (error) {
@@ -49,6 +52,25 @@ export default (props) => {
         }
 
         handleClose();
+        window.location.replace("/");
+        // setTrigger(trigger + 1);
+        // axios(`/api/user/info/update/tableName={props.tableName}, channelNo, 'setValues', 'condition'`)
+    };
+
+    const deleteRowBtn = async () => {
+        let postData = {
+            idx: rowData.idx,
+        };
+        try {
+            await axios.post("/api/user/DeleteUser", postData);
+
+            alert("삭제되었습니다.");
+        } catch (error) {
+            alert(error.response.data);
+        }
+
+        handleClose();
+        window.location.replace("/");
         // setTrigger(trigger + 1);
         // axios(`/api/user/info/update/tableName={props.tableName}, channelNo, 'setValues', 'condition'`)
     };
@@ -120,7 +142,7 @@ export default (props) => {
                                     <Button variant="outlined" color="error" onClick={deleteRowBtn}>
                                         삭제
                                     </Button>
-                                    <Button variant="outlined" color="success" onClick={deleteRowBtn}>
+                                    <Button variant="outlined" color="success" onClick={updateRowBtn}>
                                         수정
                                     </Button>
                                 </Stack>
