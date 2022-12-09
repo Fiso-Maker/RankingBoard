@@ -2,11 +2,12 @@
     "name": "rankingboard",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
-        "start": "npm-run-all --parallel start:**",
-        "start:server": "cd server && nodemon server",
-        "start:client": "cd client && npm start",
+        "start": "cd server && node server",
+        "execute": "npm-run-all --parallel execute:server execute:client",
+        "execute:server": "cd server && nodemon server",
+        "execute:client": "cd client && npm start",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
@@ -16,7 +17,8 @@
         "express": "^4.18.2",
         "lodash": "^4.17.21",
         "mysql": "^2.18.1",
-        "npm-run-all": "^4.1.5"
+        "npm-run-all": "^4.1.5",
+        "path": "^0.12.7"
     },
     "devDependencies": {
         "http-proxy-middleware": "^2.0.6",
